@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subdomain Takeover - Security Research PoC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #e74c3c;
+        }
+        
+        .warning-icon {
+            font-size: 64px;
+            color: #e74c3c;
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+        
+        .content {
+            margin-bottom: 30px;
+        }
+        
+        .info-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .info-box strong {
+            color: #856404;
+        }
+        
+        .details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .details h2 {
+            color: #2c3e50;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            margin-bottom: 10px;
+            padding: 8px;
+            background: white;
+            border-radius: 3px;
+        }
+        
+        .detail-label {
+            font-weight: bold;
+            color: #34495e;
+            display: inline-block;
+            min-width: 150px;
+        }
+        
+        .detail-value {
+            color: #2c3e50;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .impact {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .impact h3 {
+            color: #721c24;
+            margin-bottom: 10px;
+        }
+        
+        .impact ul {
+            margin-left: 20px;
+            color: #721c24;
+        }
+        
+        .impact li {
+            margin-bottom: 5px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .contact {
+            margin-top: 15px;
+            padding: 15px;
+            background: #e8f4f8;
+            border-radius: 5px;
+        }
+        
+        .contact strong {
+            color: #2c3e50;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="warning-icon">⚠️</div>
+            <h1>Subdomain Takeover - Proof of Concept</h1>
+            <p class="subtitle">Authorized Security Research & Penetration Testing</p>
+            <span class="badge">CONFIDENTIAL</span>
+        </div>
+        
+        <div class="content">
+            <div class="info-box">
+                <strong>⚡ This is a controlled security test.</strong><br>
+                This page demonstrates that the subdomain <code>ff-roadmap.adobe.com</code> 
+                was vulnerable to subdomain takeover due to an unclaimed GitHub Pages configuration.
+            </div>
+            
+            <div class="details">
+                <h2>📋 Technical Details</h2>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Target Domain:</span>
+                    <span class="detail-value">ff-roadmap.adobe.com</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Vulnerable Service:</span>
+                    <span class="detail-value">GitHub Pages</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">DNS Record Type:</span>
+                    <span class="detail-value">CNAME → *.github.io</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">HTTP Status:</span>
+                    <span class="detail-value">404 Not Found (before takeover)</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Server Header:</span>
+                    <span class="detail-value">GitHub.com</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Discovery Date:</span>
+                    <span class="detail-value">September 29, 2026</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Researcher:</span>
+                    <span class="detail-value">Muhammad Khalid Bin Walid</span>
+                </div>
+            </div>
+            
+            <div class="impact">
+                <h3>🎯 Potential Impact</h3>
+                <ul>
+                    <li><strong>Phishing Attacks:</strong> Serve fake Adobe login pages to steal credentials</li>
+                    <li><strong>Malware Distribution:</strong> Host malicious downloads under trusted domain</li>
+                    <li><strong>Brand Damage:</strong> Reputation harm from malicious content on Adobe domain</li>
+                    <li><strong>Data Theft:</strong> Intercept sensitive information from users</li>
+                    <li><strong>Cookie Hijacking:</strong> Potentially access session cookies if shared across subdomains</li>
+                </ul>
+            </div>
+            
+            <div class="info-box" style="background: #d4edda; border-left-color: #28a745;">
+                <strong>✅ Remediation Status:</strong><br>
+                This proof of concept has been created solely for demonstration purposes. 
+                The researcher recommends immediate removal or proper configuration of this DNS record.
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>This finding is part of an authorized penetration test conducted by:</p>
+            
+            <div class="contact">
+                <strong>👤 Muhammad Khalid Bin Walid</strong><br>
+                🏢 Founder, K&R Industries LTD<br>
+                🔒 Junior Red Team Analyst & Ethical Hacker<br>
+                📧 Email: <a href="mailto:pentester.walid@gmail.com">pentester.walid@gmail.com</a><br>
+                💼 LinkedIn: <a href="https://www.linkedin.com/in/muhammad-khalid-bin-walid-/" target="_blank">linkedin.com/in/muhammad-khalid-bin-walid-/</a><br>
+                🐙 GitHub: <a href="https://github.com/muhammad-khalid-bin-walid" target="_blank">github.com/muhammad-khalid-bin-walid</a>
+            </div>
+            
+            <p style="margin-top: 20px; font-size: 12px;">
+                ⚠️ <strong>Disclaimer:</strong> This research was conducted within authorized scope. 
+                All findings will be reported responsibly through appropriate channels.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
